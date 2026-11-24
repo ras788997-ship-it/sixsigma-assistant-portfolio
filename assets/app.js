@@ -1,4 +1,4 @@
-/* 六西格玛 AI 助手 · 离线演示页脚本
+﻿/* 六西格玛 AI 助手 · 离线演示页脚本
  * 数据唯一来源：assets/demo-data.js 暴露的 window.SIGMA_DATA（只读）
  * 本文件不写业务数字：页面上的数值要么直接来自 SIGMA_DATA，要么由数据字段推导
  * 检索为纯前端 bigram + IDF + 覆盖率修正，页面不发起任何网络请求、不调用模型
@@ -672,21 +672,21 @@
 
     var legend = tagLegend();
     var first = (D.statusMatrix || [])[0] || { item: '' };
-    var claim = '「' + esc(first.item) + '」和源码对不上，我按 ' + len(defs) + ' 条返工。';
+    var claim = '「' + esc(first.item) + '」和源码对不上，按 ' + len(defs) + ' 条返工。';
 
     host.innerHTML =
       kicker('defects') +
       '<h2 id="h-defects">后端缺陷与口径对照</h2>' +
       '<p class="claim">' + claim + '</p>' +
-      '<p class="lead">缺陷是逐条读源码得出的；平台方口径与我的核对结果分开写，能核的写能核，不能核的标不能核。</p>' +
+      '<p class="lead">缺陷由 AI 逐条读源码得出；平台方口径与项目内核对结果分开写，能核的写能核，不能核的标不能核。</p>' +
       '<div class="def-grid">' +
         '<ol class="def-col">' + colA + '</ol>' +
         '<ol class="def-col">' + colB + '</ol>' +
       '</div>' +
       '<div class="matrix-wrap">' +
-        '<h3 class="sub-h">平台方口径 vs 我的核对结果</h3>' +
+        '<h3 class="sub-h">平台方口径 vs 项目内核对结果</h3>' +
         '<div class="tbl-wrap"><table class="tbl smatrix">' +
-          '<thead><tr><th>项目</th><th>平台方口径</th><th>我的核对结果</th></tr></thead>' +
+          '<thead><tr><th>项目</th><th>平台方口径</th><th>项目内核对结果</th></tr></thead>' +
           '<tbody>' + rows + '</tbody></table></div>' +
         '<p class="legend-inline">' +
           '<span class="dot dot-warn" aria-hidden="true"></span>' + esc(legend.warn) +
