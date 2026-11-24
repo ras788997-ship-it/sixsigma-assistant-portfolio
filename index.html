@@ -3,80 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>六西格玛 AI 助手 · 离线演示页</title>
-<meta name="description" content="六西格玛 AI 助手项目的离线演示页：资料治理漏斗、三条真实记录回放、纯前端检索演示、资料审核发现、后端缺陷与口径、判断与边界。不连接大模型，不含原始培训资料与密钥。">
-<!-- 首屏兜底样式；完整样式在 assets/style.css，无外链资源 -->
+<title>六西格玛 AI 助手 · 演示</title>
+<meta name="description" content="六西格玛 AI 助手演示：资料治理、真实记录回放、检索引用、资料审核发现、后端缺陷与口径、判断与边界。离线回放，不连接大模型。">
+<!-- 页面骨架样式（首屏兜底）；完整视觉在 assets/ds.css，离线无外链 -->
 <style>
+  html,body{margin:0;height:100%}
+  body{background:#fff;color:#1f2329;font-family:"Microsoft YaHei","PingFang SC",system-ui,-apple-system,"Segoe UI",sans-serif}
   [hidden]{display:none !important}
-  body{margin:0;background:#F7F4EF;color:#16202B}
-  .skip{position:absolute;left:-9999px}
+  .skip{position:absolute;left:-9999px;top:0}
+  .boot{display:flex;align-items:center;justify-content:center;height:100vh;color:#8a8f99;font-size:14px}
 </style>
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v=5">
+<link rel="stylesheet" href="assets/ds.css?v=5">
 </head>
 <body>
 <a class="skip" href="#main">跳到正文</a>
 
-<header class="site-head">
-  <div class="wrap">
-    <div class="head-row">
-      <div class="brand">
-        <span class="mk" aria-hidden="true"></span>
-        <h1 id="siteTitle">六西格玛 AI 助手</h1>
+<div class="app" id="app">
+  <aside class="ds-side" id="side">
+    <div class="side-top">
+      <a class="brand" href="#/overview">
+        <span class="brand-mark" aria-hidden="true">六</span>
+        <span class="brand-text">
+          <strong id="siteTitle">六西格玛 AI 助手</strong>
+          <em>离线演示 · 不连接模型</em>
+        </span>
+      </a>
+      <button class="new-chat" type="button" id="newChat">
+        <span class="plus" aria-hidden="true">＋</span> 新对话
+      </button>
+    </div>
+
+    <nav class="tabs" aria-label="会话列表">
+      <p class="side-label">今日会话</p>
+      <a class="conv" href="#/overview" data-route="overview">
+        <span class="conv-ico" aria-hidden="true">◷</span>
+        <span class="conv-main"><span class="conv-t">概览：资料治理到可验收问答</span><span class="conv-sub">1,649 → 14,490</span></span>
+      </a>
+      <a class="conv" href="#/replay" data-route="replay">
+        <span class="conv-ico" aria-hidden="true">◷</span>
+        <span class="conv-main"><span class="conv-t">同一道题，两个答案</span><span class="conv-sub">真实记录回放</span></span>
+      </a>
+      <a class="conv" href="#/search" data-route="search">
+        <span class="conv-ico" aria-hidden="true">◷</span>
+        <span class="conv-main"><span class="conv-t">检索是怎么命中的</span><span class="conv-sub">本地检索 + 引用绑定</span></span>
+      </a>
+      <a class="conv" href="#/audit" data-route="audit">
+        <span class="conv-ico" aria-hidden="true">◷</span>
+        <span class="conv-main"><span class="conv-t">资料本身有哪些错</span><span class="conv-sub">4 处错误 · 29 条记录</span></span>
+      </a>
+      <a class="conv" href="#/defects" data-route="defects">
+        <span class="conv-ico" aria-hidden="true">◷</span>
+        <span class="conv-main"><span class="conv-t">平台方口径对不对</span><span class="conv-sub">9 处后端缺陷</span></span>
+      </a>
+      <a class="conv" href="#/boundary" data-route="boundary">
+        <span class="conv-ico" aria-hidden="true">◷</span>
+        <span class="conv-main"><span class="conv-t">哪些还没做到</span><span class="conv-sub">边界与下一步</span></span>
+      </a>
+    </nav>
+
+    <div class="side-foot">
+      <p class="side-scope"><span class="scope-mark">范围声明</span><span id="siteScope"></span></p>
+      <p class="side-meta" id="siteMeta"></p>
+      <p class="side-legal" id="footNotice"></p>
+      <div class="legend" id="footLegend" aria-label="数据口径图例"></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="chat-head">
+      <button class="icon-btn" id="sideToggle" type="button" aria-label="展开会话列表" aria-expanded="false">☰</button>
+      <div class="chat-head-mid">
+        <h2 id="chatTitle">概览</h2>
+        <span class="chat-sub" id="chatSub">离线回放 · 不连接大模型</span>
       </div>
-      <p class="head-period"><span class="num" id="sitePeriod"></span></p>
+      <span class="pill" id="sitePeriod"></span>
+    </header>
+
+    <main class="chat" id="main">
+      <div class="chat-inner">
+        <section class="page" id="page-overview" data-route="overview"><div class="chat-stream" id="mount-overview"></div></section>
+        <section class="page" id="page-replay" data-route="replay"><div class="chat-stream" id="mount-replay"></div></section>
+        <section class="page" id="page-search" data-route="search"><div class="chat-stream" id="mount-search"></div></section>
+        <section class="page" id="page-audit" data-route="audit"><div class="chat-stream" id="mount-audit"></div></section>
+        <section class="page" id="page-defects" data-route="defects"><div class="chat-stream" id="mount-defects"></div></section>
+        <section class="page" id="page-boundary" data-route="boundary"><div class="chat-stream" id="mount-boundary"></div></section>
+      </div>
+    </main>
+
+    <div class="composer">
+      <form class="composer-box" id="askForm" autocomplete="off">
+        <textarea id="askInput" rows="1" placeholder="给六西格玛助手发消息…（演示模式：不连接模型）"></textarea>
+        <button class="send" id="askSend" type="submit" aria-label="发送">↑</button>
+      </form>
+      <p class="composer-hint" id="askHint">本页是离线回放：不连接后端与模型。想试检索，去左侧「检索是怎么命中的」。</p>
     </div>
-    <p class="scope">
-      <span class="scope-mark">范围声明</span>
-      <span class="scope-text" id="siteScope"></span>
-    </p>
-    <p class="head-meta" id="siteMeta"></p>
   </div>
-</header>
+</div>
 
-<nav class="tabbar" aria-label="页面分区">
-  <div class="wrap">
-    <div class="tabs">
-      <a class="tab" href="#/overview" data-route="overview"><span class="tabn">01</span><span>概览</span></a>
-      <a class="tab" href="#/replay" data-route="replay"><span class="tabn">02</span><span>真实记录回放</span></a>
-      <a class="tab" href="#/search" data-route="search"><span class="tabn">03</span><span>检索演示</span></a>
-      <a class="tab" href="#/audit" data-route="audit"><span class="tabn">04</span><span>资料审核发现</span></a>
-      <a class="tab" href="#/defects" data-route="defects"><span class="tabn">05</span><span>缺陷与口径</span></a>
-      <a class="tab" href="#/boundary" data-route="boundary"><span class="tabn">06</span><span>判断与边界</span></a>
-    </div>
-  </div>
-</nav>
-
-<main id="main">
-  <section class="page" id="page-overview" data-route="overview" aria-labelledby="h-overview" hidden>
-    <div class="wrap" id="mount-overview"></div>
-  </section>
-  <section class="page" id="page-replay" data-route="replay" aria-labelledby="h-replay" hidden>
-    <div class="wrap" id="mount-replay"></div>
-  </section>
-  <section class="page" id="page-search" data-route="search" aria-labelledby="h-search" hidden>
-    <div class="wrap" id="mount-search"></div>
-  </section>
-  <section class="page" id="page-audit" data-route="audit" aria-labelledby="h-audit" hidden>
-    <div class="wrap" id="mount-audit"></div>
-  </section>
-  <section class="page" id="page-defects" data-route="defects" aria-labelledby="h-defects" hidden>
-    <div class="wrap" id="mount-defects"></div>
-  </section>
-  <section class="page" id="page-boundary" data-route="boundary" aria-labelledby="h-boundary" hidden>
-    <div class="wrap" id="mount-boundary"></div>
-  </section>
-</main>
-
-<footer class="site-foot">
-  <div class="wrap">
-    <p class="foot-legal" id="footNotice"></p>
-    <div class="legend" id="footLegend" aria-label="数据口径图例"></div>
-  </div>
-</footer>
-
-<noscript><p class="noscript">本页由 JavaScript 渲染演示数据，请开启脚本。数据源为同目录 assets/demo-data.js，可离线打开。</p></noscript>
+<noscript><p class="boot">本页由 JavaScript 渲染演示数据，请开启脚本。数据源为同目录 assets/demo-data.js，可离线打开。</p></noscript>
 
 <script src="assets/demo-data.js"></script>
-<script src="assets/app.js"></script>
+<script src="assets/app.js?v=5"></script>
 </body>
 </html>

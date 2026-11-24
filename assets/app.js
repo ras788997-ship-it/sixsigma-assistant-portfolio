@@ -352,10 +352,10 @@
       '<h2 id="h-overview">从资料治理到可验收问答</h2>' +
       '<p class="claim">' + claim + '</p>' +
       '<p class="lead">' + esc(D.meta.subtitle) + '</p>' +
-      '<div class="ov-grid">' +
+      '<div class="ov-grid" style="display:block;width:100%">' +
         '<div class="ov-col side">' +
           '<h3 class="sub-h">分工：谁做了什么</h3>' +
-          '<div class="roles">' + rolesHtml + '</div>' +
+          '<div class="roles" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 20px">' + rolesHtml + '</div>' +
         '</div>' +
         '<div class="ov-col">' +
           '<h3 class="sub-h">资料治理漏斗</h3>' +
@@ -363,7 +363,7 @@
         '</div>' +
         '<div class="ov-col">' +
           '<h3 class="sub-h">关键数字</h3>' +
-          '<div class="kpis">' + kpiHtml + '</div>' +
+          '<div class="kpis" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px">' + kpiHtml + '</div>' +
         '</div>' +
       '</div>' +
       '<h3 class="sub-h">时间线</h3>' +
@@ -752,6 +752,140 @@
       '</div>';
   }
 
+  /* ================= 对话壳（侧栏 / 消息 / 输入框） ================= */
+  /* 每个会话开头显示一句提问，正文作为助手回答放在消息体里 */
+  var CHAT_Q = {
+    overview: '这个助手从资料到问答，最后做成了什么？',
+    replay: '同一道题，为什么前后两次回答不一样？',
+    search: '检索是怎么命中、又怎么绑定引用的？',
+    audit: '资料本身有哪些错？',
+    defects: '平台方说「12/12 通过」，你怎么看？',
+    boundary: '哪些还没做到？'
+  };
+  var CHAT_SUB = {
+    overview: '资料治理 → 带来源片段 → 知识卡 → 问答',
+    replay: '2026-11-04 · 2026-11-05 两次真实记录',
+    search: '纯前端 bigram + IDF，不连接模型',
+    audit: '4 处资料错误 · FMEA 29 条记录 · AP 1,000 组合',
+    defects: '9 处后端缺陷 · 模拟 vs 真实口径',
+    boundary: '未验证 / 未见证据 / 下一步'
+  };
+
+  function decorate(name) {
+    var host = doc.getElementById('mount-' + name);
+    if (!host || host.getAttribute('data-chat') === '1') { return; }
+    var inner = host.innerHTML;
+    host.innerHTML =
+      '<div class="msg msg-user"><div class="bubble">' + esc(CHAT_Q[name] || '') + '</div></div>' +
+      '<div class="msg msg-ai">' +
+        '<div class="avatar" aria-hidden="true">六</div>' +
+        '<div class="msg-body">' + inner +
+          '<div class="msg-tools">' +
+            '<button class="tool tool-copy" type="button" data-copy="' + esc(name) + '">⧉ 复制回答</button>' +
+            '<span class="tool">离线回放 · 不连接模型</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    host.setAttribute('data-chat', '1');
+    /* 对话列比原页面窄，主栅格改单列（内联样式优先，避免被内容 CSS 的媒体查询覆盖） */
+    var flatten = ['.ov-grid', '.a4-grid', '.d5-grid', '.bd-grid'];
+    for (var gi = 0; gi < flatten.length; gi++) {
+      var gn = host.querySelectorAll ? host.querySelectorAll(flatten[gi]) : [];
+      for (var gj = 0; gj < gn.length; gj++) {
+        gn[gj].style.display = 'block';
+        gn[gj].style.width = '100%';
+      }
+    }
+    var roleBox = host.querySelector ? host.querySelector('.roles') : null;
+    if (roleBox) {
+      roleBox.style.display = 'grid';
+      roleBox.style.gridTemplateColumns = 'repeat(3, minmax(0, 1fr))';
+      roleBox.style.gap = '10px 20px';
+    }
+    var kpiBox = host.querySelector ? host.querySelector('.kpis') : null;
+    if (kpiBox) { kpiBox.style.gridTemplateColumns = 'repeat(2, minmax(0, 1fr))'; }
+  }
+
+  function fillChatHead(name) {
+    var t = doc.getElementById('chatTitle');
+    if (t) { t.textContent = ROUTE_TITLE[name] || ''; }
+    var s = doc.getElementById('chatSub');
+    if (s) { s.textContent = CHAT_SUB[name] || '离线回放 · 不连接大模型'; }
+  }
+
+  function closeDrawer() {
+    if (doc.body && doc.body.classList) { doc.body.classList.remove('side-open'); }
+    var btn = doc.getElementById('sideToggle');
+    if (btn) { btn.setAttribute('aria-expanded', 'false'); }
+  }
+
+  function initShell() {
+    var toggle = doc.getElementById('sideToggle');
+    if (toggle) {
+      toggle.addEventListener('click', function () {
+        var open = doc.body.classList.toggle('side-open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }, false);
+    }
+    var scrim = doc.createElement('div');
+    scrim.className = 'side-scrim';
+    scrim.addEventListener('click', closeDrawer, false);
+    if (doc.body && doc.body.appendChild) { doc.body.appendChild(scrim); }
+
+    var newChat = doc.getElementById('newChat');
+    if (newChat) {
+      newChat.addEventListener('click', function () {
+        if (global.location) { global.location.hash = '#/overview'; }
+        closeDrawer();
+      }, false);
+    }
+
+    var conv = doc.querySelectorAll ? doc.querySelectorAll('.tabs a') : [];
+    for (var i = 0; i < conv.length; i++) {
+      conv[i].addEventListener('click', closeDrawer, false);
+    }
+
+    doc.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.getAttribute || t.getAttribute('data-copy') == null) { return; }
+      var name = t.getAttribute('data-copy');
+      var sec = doc.getElementById('page-' + name);
+      var text = sec ? String(sec.textContent || '').replace(/\s+/g, ' ').trim() : '';
+      try {
+        if (global.navigator && global.navigator.clipboard) {
+          global.navigator.clipboard.writeText(text);
+        }
+      } catch (err) { /* 剪贴板不可用时忽略 */ }
+      t.textContent = '✓ 已复制';
+      global.setTimeout(function () { t.textContent = '⧉ 复制回答'; }, 1600);
+    }, false);
+
+    var form = doc.getElementById('askForm');
+    var input = doc.getElementById('askInput');
+    var hint = doc.getElementById('askHint');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!hint) { return; }
+        hint.className = 'composer-hint is-warn';
+        hint.textContent = '演示模式：本页不连接后端与模型，不能真的回答。要试检索，请打开左侧「检索是怎么命中的」，在那一页输入。';
+        if (input) { input.value = ''; input.blur(); }
+        global.setTimeout(function () {
+          hint.className = 'composer-hint';
+          hint.textContent = '本页是离线回放：不连接后端与模型。想试检索，去左侧「检索是怎么命中的」。';
+        }, 4200);
+      }, false);
+    }
+    if (input) {
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          if (form && form.dispatchEvent) { form.dispatchEvent(new global.Event('submit')); }
+        }
+      }, false);
+    }
+  }
+
   /* ================= 路由 ================= */
   var CURRENT = '';
   function currentHash() {
@@ -783,6 +917,9 @@
       global.scrollTo(0, 0);
     }
     CURRENT = name;
+    decorate(name);
+    fillChatHead(name);
+    closeDrawer();
     if (D.meta && D.meta.title) {
       doc.title = D.meta.title + ' · ' + (ROUTE_TITLE[name] || '') + ' · 离线演示页';
     }
@@ -803,6 +940,7 @@
     renderDefects();
     renderBoundary();
     showRoute(parseRoute(currentHash()));
+    initShell();
     if (global.addEventListener) { global.addEventListener('hashchange', onHashChange, false); }
   }
 
