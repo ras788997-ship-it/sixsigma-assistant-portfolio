@@ -285,13 +285,14 @@
     var m = D.meta || {};
     var notice = doc.getElementById('footNotice');
     if (notice) {
-      notice.innerHTML = esc(m.repoNotice) + ' · 本页为离线演示，不连接大模型。数据口径见下方图例（数值徽章的含义）。';
+      notice.innerHTML = esc(m.repoNotice) + '。';
     }
     var legend = doc.getElementById('footLegend');
     if (legend && D.tagLegend) {
-      legend.innerHTML = TAG_ORDER.map(function (k) {
-        return '<span class="leg">' + tagSpan(k, D.tagLegend) +
-          '<span>' + esc(D.tagLegend[k]) + '</span></span>';
+      var SHORT = { self: '已核对', history: '历史报告', platform: '平台自报', measured: '实测', warn: '存疑', pass: '通过', issue: '问题' };
+      legend.innerHTML = '<span class="leg-label">口径</span>' + TAG_ORDER.map(function (k) {
+        return '<span class="leg" title="' + esc(D.tagLegend[k]) + '">' + tagSpan(k, D.tagLegend) +
+          '<span>' + esc(SHORT[k] || '') + '</span></span>';
       }).join('');
     }
   }
@@ -351,7 +352,6 @@
       kicker('overview') +
       '<h2 id="h-overview">从资料治理到可验收问答</h2>' +
       '<p class="claim">' + claim + '</p>' +
-      '<p class="lead">' + esc(D.meta.subtitle) + '</p>' +
       '<div class="ov-grid" style="display:block;width:100%">' +
         '<div class="ov-col side">' +
           '<h3 class="sub-h">分工：谁做了什么</h3>' +
@@ -371,7 +371,7 @@
       '<p class="footnote">证据：' +
         esc(evFile('资料盘点')) + '；' + esc(evFile('处理统计')) + '；' +
         esc(evFile('OCR 统计')) + '；' + esc(evFile('小程序检查')) +
-        '。徽章含义见页脚图例。</p>';
+        '。</p>';
   }
 
   /* ================= S2 真实记录回放 ================= */
@@ -432,14 +432,13 @@
       kicker('replay') +
       '<h2 id="h-replay">' + len(list) + ' 条记录，原样回放</h2>' +
       '<p class="claim">' + claim + '</p>' +
-      '<p class="lead">' + esc(D.replayIntro) + '</p>' +
       '<div class="rec-tools">' +
         '<button class="btn" type="button" id="recExpand">全部展开</button>' +
         '<button class="btn" type="button" id="recCollapse">全部收起</button>' +
       '</div>' +
       cardsHtml +
       '<ul class="bd-strip">' + boundaryHtml + '</ul>' +
-      '<p class="footnote">边界：' + len(D.replayBoundary) + ' 条记录之外的稳定性未验证。' +
+      '<p class="footnote">' +
         '证据：' + esc(evFile('接手核对')) + '；' + esc(evFile('校对记录')) + '。</p>';
 
     var nodes = host.querySelectorAll ? host.querySelectorAll('details.rec-more') : [];
@@ -483,18 +482,17 @@
       return '<button class="ex-btn" type="button" data-q="' + esc(q) + '">' + esc(q) + '</button>';
     }).join('');
 
-    var bottomLine = '检索结果只来自 ' + corpusN + ' 条演示语料（自拟，非原始培训资料）；' +
+    var bottomLine = '演示语料 ' + corpusN + ' 条为自拟，非原始培训资料；' +
       '正式产品的语料是 ' + esc(last.value) + ' ' + esc(last.unit) + '，不随仓库发布。';
 
     host.innerHTML =
       kicker('search') +
       '<h2 id="h-search">前端检索 + 引用绑定</h2>' +
       '<p class="claim">不接大模型，也能把「问题 → 卡号 → 原文片段」这条链路走完，并让它可复核。</p>' +
-      '<p class="lead">' + esc(D.searchNote) + '</p>' +
       '<div class="search-shell">' +
         '<div class="search-badges">' +
           '<span class="badge-strong">本地检索 · 无大模型</span>' +
-          '<span class="algo-note">bigram + IDF + 覆盖率修正 · 每次取 top ' + SEARCH.TOP + '</span>' +
+          '<span class="algo-note">bigram + IDF · top ' + SEARCH.TOP + '</span>' +
         '</div>' +
         '<form class="search-form" id="searchForm" role="search">' +
           '<label class="sr-only" for="searchQ">输入要检索的问题</label>' +
@@ -511,7 +509,7 @@
           ' · 分数按最高分归一化到 0–100 · 命中词已高亮</p>' +
         '<p class="search-line">' + bottomLine + '</p>' +
       '</div>' +
-      '<p class="footnote">检索完全在前端完成：不请求接口、不调用模型；无命中时按「没有依据」处理。</p>';
+      '<p class="footnote">不请求接口、不调用模型；无命中按「没有依据」处理。</p>';
 
     var form = doc.getElementById('searchForm');
     var input = doc.getElementById('searchQ');
@@ -622,7 +620,6 @@
       kicker('audit') +
       '<h2 id="h-audit">资料里的错，逐条留出处</h2>' +
       '<p class="claim">' + claim + '</p>' +
-      '<p class="lead">原答案不改，另开一列写校对结论；供应商的原始记录不被覆盖。</p>' +
       '<div class="err-grid">' + errHtml + '</div>' +
       '<h3 class="sub-h">FMEA 案例审核</h3>' +
       '<div class="tbl-wrap"><table class="tbl tbl-wide">' +
@@ -678,7 +675,7 @@
       kicker('defects') +
       '<h2 id="h-defects">后端缺陷与口径对照</h2>' +
       '<p class="claim">' + claim + '</p>' +
-      '<p class="lead">缺陷由 AI 逐条读源码得出；平台方口径与项目内核对结果分开写，能核的写能核，不能核的标不能核。</p>' +
+      '<p class="lead">缺陷由 AI 逐条读源码列出。</p>' +
       '<div class="def-grid">' +
         '<ol class="def-col">' + colA + '</ol>' +
         '<ol class="def-col">' + colB + '</ol>' +
@@ -748,7 +745,7 @@
         '<div class="tbl-wrap"><table class="tbl tbl-wide">' +
           '<thead><tr><th>证据</th><th>文件路径</th><th>证明什么</th><th>口径</th></tr></thead>' +
           '<tbody>' + evRows + '</tbody></table></div>' +
-        '<p class="footnote">文件不随仓库发布；口径徽章含义见页脚图例。</p>' +
+        '<p class="footnote">文件不随仓库发布。</p>' +
       '</div>';
   }
 
@@ -782,7 +779,6 @@
         '<div class="msg-body">' + inner +
           '<div class="msg-tools">' +
             '<button class="tool tool-copy" type="button" data-copy="' + esc(name) + '">⧉ 复制回答</button>' +
-            '<span class="tool">离线回放 · 不连接模型</span>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -809,8 +805,6 @@
   function fillChatHead(name) {
     var t = doc.getElementById('chatTitle');
     if (t) { t.textContent = ROUTE_TITLE[name] || ''; }
-    var s = doc.getElementById('chatSub');
-    if (s) { s.textContent = CHAT_SUB[name] || '离线回放 · 不连接大模型'; }
   }
 
   function closeDrawer() {
@@ -862,18 +856,20 @@
 
     var form = doc.getElementById('askForm');
     var input = doc.getElementById('askInput');
-    var hint = doc.getElementById('askHint');
     if (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        if (!hint) { return; }
-        hint.className = 'composer-hint is-warn';
-        hint.textContent = '演示模式：本页不连接后端与模型，不能真的回答。要试检索，请打开左侧「检索是怎么命中的」，在那一页输入。';
+        var box = doc.querySelector ? doc.querySelector('.composer') : null;
+        if (!box) { return; }
+        var old = doc.getElementById('askHint');
+        if (old && old.parentNode) { old.parentNode.removeChild(old); }
+        var tip = doc.createElement('p');
+        tip.className = 'composer-hint is-warn';
+        tip.id = 'askHint';
+        tip.textContent = '演示模式：不连接模型，不能真的回答。要试检索，去左侧「检索是怎么命中的」。';
+        box.appendChild(tip);
         if (input) { input.value = ''; input.blur(); }
-        global.setTimeout(function () {
-          hint.className = 'composer-hint';
-          hint.textContent = '本页是离线回放：不连接后端与模型。想试检索，去左侧「检索是怎么命中的」。';
-        }, 4200);
+        global.setTimeout(function () { if (tip.parentNode) { tip.parentNode.removeChild(tip); } }, 4000);
       }, false);
     }
     if (input) {

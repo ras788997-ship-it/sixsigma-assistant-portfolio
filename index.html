@@ -26,45 +26,40 @@
         <span class="brand-mark" aria-hidden="true">六</span>
         <span class="brand-text">
           <strong id="siteTitle">六西格玛 AI 助手</strong>
-          <em>离线演示 · 不连接模型</em>
+          <em>离线演示 · 不连模型</em>
         </span>
       </a>
-      <button class="new-chat" type="button" id="newChat">
-        <span class="plus" aria-hidden="true">＋</span> 新对话
-      </button>
     </div>
 
     <nav class="tabs" aria-label="会话列表">
-      <p class="side-label">今日会话</p>
       <a class="conv" href="#/overview" data-route="overview">
         <span class="conv-ico" aria-hidden="true">◷</span>
-        <span class="conv-main"><span class="conv-t">概览：资料治理到可验收问答</span><span class="conv-sub">1,649 → 14,490</span></span>
+        <span class="conv-main"><span class="conv-t">概览：资料治理到可验收问答</span></span>
       </a>
       <a class="conv" href="#/replay" data-route="replay">
         <span class="conv-ico" aria-hidden="true">◷</span>
-        <span class="conv-main"><span class="conv-t">同一道题，两个答案</span><span class="conv-sub">真实记录回放</span></span>
+        <span class="conv-main"><span class="conv-t">同一道题，两个答案</span></span>
       </a>
       <a class="conv" href="#/search" data-route="search">
         <span class="conv-ico" aria-hidden="true">◷</span>
-        <span class="conv-main"><span class="conv-t">检索是怎么命中的</span><span class="conv-sub">本地检索 + 引用绑定</span></span>
+        <span class="conv-main"><span class="conv-t">检索是怎么命中的</span></span>
       </a>
       <a class="conv" href="#/audit" data-route="audit">
         <span class="conv-ico" aria-hidden="true">◷</span>
-        <span class="conv-main"><span class="conv-t">资料本身有哪些错</span><span class="conv-sub">4 处错误 · 29 条记录</span></span>
+        <span class="conv-main"><span class="conv-t">资料本身有哪些错</span></span>
       </a>
       <a class="conv" href="#/defects" data-route="defects">
         <span class="conv-ico" aria-hidden="true">◷</span>
-        <span class="conv-main"><span class="conv-t">平台方口径对不对</span><span class="conv-sub">9 处后端缺陷</span></span>
+        <span class="conv-main"><span class="conv-t">平台方口径对不对</span></span>
       </a>
       <a class="conv" href="#/boundary" data-route="boundary">
         <span class="conv-ico" aria-hidden="true">◷</span>
-        <span class="conv-main"><span class="conv-t">哪些还没做到</span><span class="conv-sub">边界与下一步</span></span>
+        <span class="conv-main"><span class="conv-t">哪些还没做到</span></span>
       </a>
     </nav>
 
     <div class="side-foot">
       <p class="side-scope"><span class="scope-mark">范围声明</span><span id="siteScope"></span></p>
-      <p class="side-meta" id="siteMeta"></p>
       <p class="side-legal" id="footNotice"></p>
       <div class="legend" id="footLegend" aria-label="数据口径图例"></div>
     </div>
@@ -75,7 +70,6 @@
       <button class="icon-btn" id="sideToggle" type="button" aria-label="展开会话列表" aria-expanded="false">☰</button>
       <div class="chat-head-mid">
         <h2 id="chatTitle">概览</h2>
-        <span class="chat-sub" id="chatSub">离线回放 · 不连接大模型</span>
       </div>
       <span class="pill" id="sitePeriod"></span>
     </header>
@@ -96,7 +90,6 @@
         <textarea id="askInput" rows="1" placeholder="给六西格玛助手发消息…（演示模式：不连接模型）"></textarea>
         <button class="send" id="askSend" type="submit" aria-label="发送">↑</button>
       </form>
-      <p class="composer-hint" id="askHint">本页是离线回放：不连接后端与模型。想试检索，去左侧「检索是怎么命中的」。</p>
     </div>
   </div>
 </div>

@@ -371,3 +371,9 @@ mark { background: #fff2c2; color: inherit; border-radius: 3px; padding: 0 1px; 
 @media (max-width: 900px) {
   .app .msg-body .roles { grid-template-columns: minmax(0, 1fr) !important; }
 }
+
+/* 口径图例：紧凑一行式 */
+.leg-label { font-size: 10px; color: #a6abb5; margin-right: 2px; }
+.legend { gap: 2px 7px; }
+.legend .leg { font-size: 9.5px; gap: 3px; }
+.legend .tag { padding: 0 5px; font-size: 9px; }
