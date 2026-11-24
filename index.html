@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>六西格玛 AI 助手 · 离线演示页</title>
+<meta name="description" content="六西格玛 AI 助手项目的离线演示页：资料治理漏斗、三条真实记录回放、纯前端检索演示、资料审核发现、后端缺陷与口径、判断与边界。不连接大模型，不含原始培训资料与密钥。">
+<!-- 首屏兜底样式；完整样式在 assets/style.css，无外链资源 -->
+<style>
+  [hidden]{display:none !important}
+  body{margin:0;background:#F7F4EF;color:#16202B}
+  .skip{position:absolute;left:-9999px}
+</style>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到正文</a>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="head-row">
+      <div class="brand">
+        <span class="mk" aria-hidden="true"></span>
+        <h1 id="siteTitle">六西格玛 AI 助手</h1>
+      </div>
+      <p class="head-period"><span class="num" id="sitePeriod"></span></p>
+    </div>
+    <p class="scope">
+      <span class="scope-mark">范围声明</span>
+      <span class="scope-text" id="siteScope"></span>
+    </p>
+    <p class="head-meta" id="siteMeta"></p>
+  </div>
+</header>
+
+<nav class="tabbar" aria-label="页面分区">
+  <div class="wrap">
+    <div class="tabs">
+      <a class="tab" href="#/overview" data-route="overview"><span class="tabn">01</span><span>概览</span></a>
+      <a class="tab" href="#/replay" data-route="replay"><span class="tabn">02</span><span>真实记录回放</span></a>
+      <a class="tab" href="#/search" data-route="search"><span class="tabn">03</span><span>检索演示</span></a>
+      <a class="tab" href="#/audit" data-route="audit"><span class="tabn">04</span><span>资料审核发现</span></a>
+      <a class="tab" href="#/defects" data-route="defects"><span class="tabn">05</span><span>缺陷与口径</span></a>
+      <a class="tab" href="#/boundary" data-route="boundary"><span class="tabn">06</span><span>判断与边界</span></a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+  <section class="page" id="page-overview" data-route="overview" aria-labelledby="h-overview" hidden>
+    <div class="wrap" id="mount-overview"></div>
+  </section>
+  <section class="page" id="page-replay" data-route="replay" aria-labelledby="h-replay" hidden>
+    <div class="wrap" id="mount-replay"></div>
+  </section>
+  <section class="page" id="page-search" data-route="search" aria-labelledby="h-search" hidden>
+    <div class="wrap" id="mount-search"></div>
+  </section>
+  <section class="page" id="page-audit" data-route="audit" aria-labelledby="h-audit" hidden>
+    <div class="wrap" id="mount-audit"></div>
+  </section>
+  <section class="page" id="page-defects" data-route="defects" aria-labelledby="h-defects" hidden>
+    <div class="wrap" id="mount-defects"></div>
+  </section>
+  <section class="page" id="page-boundary" data-route="boundary" aria-labelledby="h-boundary" hidden>
+    <div class="wrap" id="mount-boundary"></div>
+  </section>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p class="foot-legal" id="footNotice"></p>
+    <div class="legend" id="footLegend" aria-label="数据口径图例"></div>
+  </div>
+</footer>
+
+<noscript><p class="noscript">本页由 JavaScript 渲染演示数据，请开启脚本。数据源为同目录 assets/demo-data.js，可离线打开。</p></noscript>
+
+<script src="assets/demo-data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

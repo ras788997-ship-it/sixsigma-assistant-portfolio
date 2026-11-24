@@ -1,0 +1,46 @@
+版权所有 © 2026 本仓库作者。保留所有权利。
+Copyright (c) 2026 The repository author. All rights reserved.
+
+本仓库为个人求职作品演示，公开可见，但**不是开源项目**。
+This repository is a personal portfolio demonstration. It is publicly viewable
+but is **NOT open source**.
+
+未授予任何许可 / No licence is granted
+------------------------------------------------
+1. 未以任何开源许可（MIT / Apache-2.0 / GPL / BSD 等）发布；默认适用著作权法，
+   保留全部权利。
+   No open-source licence (MIT, Apache-2.0, GPL, BSD, etc.) is applied. All rights
+   are reserved under applicable copyright law.
+
+2. 允许：通过 GitHub 页面浏览、阅读本仓库代码与文档，用于评估作者能力。
+   Permitted: viewing and reading the code and documents on GitHub for the purpose
+   of evaluating the author's work.
+
+3. 不允许（未经作者书面许可）：
+   - 复制、修改、再分发本仓库任何内容；
+   - 将本仓库代码或文档用于商业或非商业产品、课程、培训、数据集；
+   - 以本仓库内容训练或微调任何模型；
+   - 去除或修改版权、许可与出处声明。
+   Not permitted without prior written permission: copying, modifying, or
+   redistributing any part of this repository; using it in products, courses,
+   training, or datasets; using it to train or fine-tune models; removing
+   copyright, licence, or attribution notices.
+
+4. 仓库内**不含**原始培训资料、教材扫描件、企业案例原文、平台密钥或用户数据。
+   演示语料为作者自拟，仅用于展示检索与引用机制。
+   This repository contains **no** original training materials, scanned
+   textbooks, enterprise case texts, platform keys, or user data. The demo corpus
+   is written by the author solely to illustrate retrieval and citation mechanics.
+
+5. 文中出现的第三方名称（六西格玛、AIAG-VDA、FMEA、Minitab、DeepSeek、微信小程序、
+   秒哒、扣子等）归各自权利人所有，仅作事实性指称，不表示任何关联或背书。
+   Third-party names are trademarks of their respective owners and are used only
+   for factual reference, implying no affiliation or endorsement.
+
+如需引用或合作，请通过 GitHub 联系作者。
+For citation or collaboration, please contact the author via GitHub.
+
+--- 说明（给面试官）---
+"公开但不开源"的含义是：任何人都可以打开这个链接阅读代码与数据，以判断作者做了什么；
+但作者没有授予复用、改编、再发布或训练模型的权利。GitHub 上公开仓库在技术上无法阻止
+他人查看源码，这正是不开源许可需要明确写出来的原因。
